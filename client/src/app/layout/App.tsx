@@ -1,6 +1,5 @@
 import { Container, createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import {useState, useEffect} from 'react';
-import { json } from 'stream/consumers';
 import Catalog from '../../feature/catalog/Catalog';
 import { Product } from '../models/product';
 import Header from './Header';
