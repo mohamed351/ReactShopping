@@ -19,9 +19,10 @@ namespace BackEnd.Controllers
         [HttpGet("bad-request")]
         public IActionResult GetBadRequest()
         {
-            return BadRequest("This is a bad request");
+            return BadRequest(new ProblemDetails() { Detail = "This a bad Request" });
+           // return BadRequest("This is a bad request");
         }
-
+        [HttpGet("unauth")]
         public IActionResult GetUnAuthrized()
         {
             return Unauthorized("The user is unauth");
@@ -32,6 +33,11 @@ namespace BackEnd.Controllers
             ModelState.AddModelError("Problem 1", "There is a problem");
             ModelState.AddModelError("Problem 2", "There is a problem");
             return ValidationProblem();
+        }
+        [HttpGet("server-error")]
+        public IActionResult GetServerError()
+        {
+            throw new Exception("This Server Error");
         }
 
 
