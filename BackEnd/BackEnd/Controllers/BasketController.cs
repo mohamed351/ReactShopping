@@ -1,4 +1,5 @@
 ﻿using BackEnd.Data;
+using BackEnd.DTOS;
 using BackEnd.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +21,7 @@ namespace BackEnd.Controllers
             this.context = context;
         }
         [HttpGet]
-        public async Task<ActionResult<Basket>> GetBasket()
+        public async Task<ActionResult<BasketDto>> GetBasket()
         {
             var basket = await RetrevieBasket();
 
@@ -28,7 +29,16 @@ namespace BackEnd.Controllers
             {
                 return NotFound();
             }
-            return basket;
+            return new BasketDto() { 
+                BuyerId = basket.BuyerId,
+                Id = basket.Id,
+                Items = basket.Items.Select(a=> new BasketItemDto() { Brand =a.Product.Brand ,
+                Name = a.Product.Name
+                , PictureUrl = a.Product.PictureUrl
+                , Price = a.Product.Price
+                , ProductId = a.ProductId
+                , Quantity = a.Quantity
+                , Type = a.Product.Type} ).ToList()};
         }
 
        
@@ -40,7 +50,8 @@ namespace BackEnd.Controllers
             var basket = await RetrevieBasket();
             if(basket == null)
             {
-                CreateBasket();
+              basket = await CreateBasket();
+             
             }
             var product = await context.Products.FirstOrDefaultAsync(a => a.Id == productId);
             if(product == null)
@@ -62,18 +73,36 @@ namespace BackEnd.Controllers
             
         }
 
-        private void CreateBasket()
+        private async Task<Basket> CreateBasket()
         {
             var buyerId = Guid.NewGuid().ToString();
             var cookieOptions = new CookieOptions() { IsEssential = true, Expires = DateTime.Now.AddDays(30) };
             Response.Cookies.Append("buyerId", buyerId, cookieOptions);
-
+            var basket = new Basket() { BuyerId = buyerId };
+            context.Baskets.Add(basket);
+           await context.SaveChangesAsync();
+            return basket;
         }
 
         [HttpDelete]
         public async Task<ActionResult> RemoveItemBasket(int productId, int quantity)
         {
-            return Ok();
+            var basket = await RetrevieBasket();
+            if(basket == null)
+            {
+                return NotFound();
+            }
+            var product = context.Products.FirstOrDefaultAsync(a => a.Id == productId);
+            if(product == null)
+            {
+                return NotFound();
+            }
+            basket.RemoveItem(productId, quantity);
+            var result = (await context.SaveChangesAsync()) > 0;
+            if(result) return Ok();
+
+            return BadRequest(new ProblemDetails() { Title = "Problem removing item from the basket" });
+
         }
         private async Task<Basket> RetrevieBasket()
         {

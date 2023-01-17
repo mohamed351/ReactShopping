@@ -39,7 +39,7 @@ namespace BackEnd
             services.AddDbContext<StoreDbContext>(opt =>
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-            });
+            },ServiceLifetime.Transient);
 
             services.AddCors();
         }
