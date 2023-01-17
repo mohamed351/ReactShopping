@@ -3,15 +3,16 @@ import {useEffect,useState} from 'react';
 import axios from 'axios';
 import { Product } from "../../app/models/product";
 import { Grid, Table, TableBody, TableCell, TableRow } from "@mui/material";
+import agent from "../../app/api/agent";
 export default function ProductDetails(){
-    const {id} = useParams();
+    const {id} = useParams<{id:string}>();
     const [product,setProduct] = useState<Product>();
     const [loading,setIsLoading] = useState(true);
     useEffect(()=>{
-        axios.get(`https://localhost:44340/api/Products/${id}`)
-        .then(a=>setProduct(a.data))
-        .catch(a=> console.log(a))
-        .finally(()=>setIsLoading(false))
+        agent.Catalog.details(parseInt(id!))
+        .then(product =>{ setProduct(product)})
+        .finally(()=>setIsLoading(false));
+      
     },[id]);
 
     if(loading){

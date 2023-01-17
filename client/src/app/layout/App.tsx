@@ -8,6 +8,7 @@ import {Routes, Route , BrowserRouter} from 'react-router-dom';
 import HomePage from '../../feature/home/HomePage';
 import AboutPage from '../../feature/about/AbountPage';
 import ProductDetails from '../../feature/catalog/ProductDetails';
+import agent from '../api/agent';
 
 function App() {
 
@@ -15,9 +16,7 @@ function App() {
   const [darkMode,setDarkMode] = useState(false);
   
   useEffect(()=>{
-  fetch("https://localhost:44340/api/Products").then(a=>{
-    return a.json()
-  }).then(a=> setProduct(a))
+  agent.Catalog.list().then(currentProducts=> setProduct(currentProducts)).catch(a=> console.log(a));
   },[]);
 
   const theme = createTheme({
