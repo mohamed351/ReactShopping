@@ -55,10 +55,10 @@ namespace BackEnd
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BackEnd v1"));
             }
 
-            app.UseHttpsRedirection();
+          //  app.UseHttpsRedirection();
 
             app.UseRouting();
-            app.UseCors(a => a.AllowCredentials().AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000"));
+            app.UseCors(a => a.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:9032"));
 
             app.UseAuthorization();
 

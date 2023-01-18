@@ -69,7 +69,7 @@ namespace BackEnd.Controllers
         private async Task<Basket> CreateBasket()
         {
             var buyerId = Guid.NewGuid().ToString();
-            var cookieOptions = new CookieOptions() { IsEssential = true, Expires = DateTime.Now.AddDays(30) };
+            var cookieOptions = new CookieOptions() { IsEssential = true, Expires = DateTime.Now.AddDays(30), SameSite = SameSiteMode.None, HttpOnly = true , Secure = true };
             Response.Cookies.Append("buyerId", buyerId, cookieOptions);
             var basket = new Basket() { BuyerId = buyerId };
             context.Baskets.Add(basket);
