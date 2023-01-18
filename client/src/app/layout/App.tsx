@@ -9,6 +9,7 @@ import HomePage from '../../feature/home/HomePage';
 import AboutPage from '../../feature/about/AbountPage';
 import ProductDetails from '../../feature/catalog/ProductDetails';
 import agent from '../api/agent';
+import BasketPage from '../../feature/basket/BasketPage';
 
 function App() {
 
@@ -39,6 +40,7 @@ function App() {
         <Route path='/about' element={ <AboutPage />} />
         <Route path='/catalog' element={ <Catalog products={products} />} />
         <Route path="/catalog/:id" element={<ProductDetails/>} />
+        <Route path='/basket' element={<BasketPage/>}/>
    </Routes>
  
    </Container>

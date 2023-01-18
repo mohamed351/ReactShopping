@@ -40,10 +40,12 @@ export default function Header({idDarkMode,onThemeChange}:Props){
             </ListItem>
 
             <ListItem>
-              <IconButton style={{color:"white"}}>
+              <IconButton  style={{color:"white"}} >
+                <Link to="/basket" style={{color:"white"}}>
                 <Badge badgeContent={4}>
                     <ShoppingCart />
                 </Badge>
+                </Link>
               </IconButton>
             </ListItem>
             </List>
