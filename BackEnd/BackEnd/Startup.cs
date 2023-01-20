@@ -58,7 +58,7 @@ namespace BackEnd
           //  app.UseHttpsRedirection();
 
             app.UseRouting();
-            app.UseCors(a => a.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:9032"));
+            app.UseCors(a => a.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:1234"));
 
             app.UseAuthorization();
 

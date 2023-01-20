@@ -7,7 +7,6 @@ axios.defaults.withCredentials = true;
 
 const responseBody = (response:AxiosResponse) => response.data;
 
-
 const request = {
     get: (url:string)=> axios.get(url).then(responseBody),
     post:(url:string, body:{}) => axios.post(url,body).then(responseBody),
