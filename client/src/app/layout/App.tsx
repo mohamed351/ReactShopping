@@ -11,6 +11,7 @@ import agent from '../api/agent';
 import BasketPage from '../../feature/basket/BasketPage';
 import { useStoreContext } from '../context/StoreContext';
 import { getCookie } from '../utility/utill';
+import ContactPage from '../../feature/contact/ContactPage';
 
 function App() {
 
@@ -42,6 +43,7 @@ function App() {
         <Route path='/catalog' element={ <Catalog />} />
         <Route path="/catalog/:id" element={<ProductDetails/>} />
         <Route path='/basket' element={<BasketPage/>}/>
+        <Route path="/contact" element={<ContactPage />} />
    </Routes>
  
    </Container>
