@@ -5,8 +5,8 @@ import { Product } from "../../app/models/product";
 import {Link} from 'react-router-dom';
 import { useState } from "react";
 import agent from "../../app/api/agent";
-import { useStoreContext } from "../../app/context/StoreContext";
-
+import { setBasket} from '../../feature/basket/basketSlice';
+import {useAppDispatch} from '../../app/store/configureStore';
 
 interface Props{
     product:Product
@@ -14,11 +14,12 @@ interface Props{
 
 export  default function ProductCard({product}:Props){
   const [loading, setIsLoading] =useState(false);
-  const {setBasket} = useStoreContext();
+  const dispatch = useAppDispatch();
+  
   const handleAddItem =()=>{
     setIsLoading(true)
     agent.Basket.addItem(product.id)
-    .then(a=> setBasket(a))
+    .then(a=> dispatch(setBasket({...a})))
     .catch(a=> console.log(a))
     .finally(()=> setIsLoading(false));
   }

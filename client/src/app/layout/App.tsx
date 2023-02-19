@@ -9,14 +9,17 @@ import AboutPage from '../../feature/about/AbountPage';
 import ProductDetails from '../../feature/catalog/ProductDetails';
 import agent from '../api/agent';
 import BasketPage from '../../feature/basket/BasketPage';
-import { useStoreContext } from '../context/StoreContext';
 import { getCookie } from '../utility/utill';
 import ContactPage from '../../feature/contact/ContactPage';
+import { useAppDispatch } from '../store/configureStore';
+import { setBasket } from '../../feature/basket/basketSlice';
 
 function App() {
 
-   const {setBasket} = useStoreContext(); 
+ 
   const [darkMode,setDarkMode] = useState(false);
+  const dispatch = useAppDispatch();
+
   
   const theme = createTheme({
     palette:{
@@ -25,9 +28,9 @@ function App() {
   })
   useEffect(()=>{
     if(getCookie("buyerId")){
-    agent.Basket.get().then(data => setBasket(data));
+    agent.Basket.get().then(data => dispatch(setBasket({...data})));
     }
-  },[setBasket])
+  },[])
 
 
   return (

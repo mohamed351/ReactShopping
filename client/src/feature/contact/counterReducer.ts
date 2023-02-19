@@ -1,5 +1,4 @@
-export const INCREMENT ="INCREMENT";
-export const DECREMENT = "DECREMENT";
+import { createSlice } from "@reduxjs/toolkit";
 export interface CounterState{
     data:number;
 }
@@ -7,21 +6,17 @@ export interface CounterState{
 const initialState:CounterState ={
     data:42
 } 
-export default function counterReducer(state = initialState, action:any){
-    switch(action.type){
-        case INCREMENT:
-            return {
-                ...state,
-                data:state.data +1
-            }
-        case DECREMENT:
-            return {
-            ...state,
-            data:state.data -1
+export const counterSlice = createSlice({
+    name:"counter",
+    initialState,
+    reducers:{
+        increment:(state,action)=>{
+            state.data +=1;
+        },
+        decrement:(state,action)=>{
+            state.data -=1
         }
-
-        default:
-            return state;
     }
-    
-}
+})
+
+export const {decrement,increment} = counterSlice.actions;

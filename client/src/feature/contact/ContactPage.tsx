@@ -1,14 +1,14 @@
 import { Button } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import { CounterState, DECREMENT, INCREMENT } from "./counterReducer";
+import {useAppDispatch, useAppSelector} from '../../app/store/configureStore';
+import {decrement, increment} from '../contact/counterReducer';
 
 export default function ContactPage(){
-   const {data} =  useSelector((state:CounterState)=> state);
-   const dispatch = useDispatch();
+     const counterSelector = useAppSelector(state => state.counter);
+     const dispatch = useAppDispatch()
     return (<>
     <h2>Contact Page</h2>
-        {data}
-        <Button onClick={()=> dispatch({type:INCREMENT})}> +</Button>
-        <Button onClick={()=> dispatch({type:DECREMENT})}> -</Button>
+        {counterSelector.data}
+        <Button onClick={()=> dispatch(increment({}))}> +</Button>
+        <Button onClick={()=> dispatch(decrement({}))}> -</Button>
     </>)
 }

@@ -1,15 +1,17 @@
 import { Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { Add, Delete, Remove } from "@mui/icons-material";
-import { useStoreContext } from "../../app/context/StoreContext";
 import agent from "../../app/api/agent";
 import { useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { BasketData } from "../../app/models/basketData";
 import BasketSummary from "./BasketSummary";
+import { useAppSelector, useAppDispatch } from "../../app/store/configureStore";
+import {removeItem, setBasket} from "../basket/basketSlice";
 
 
 export default function BasketPage(){
-  const {basket,removeBasket,setBasket} =  useStoreContext();
+    const dispatch = useAppDispatch();
+   const {basket} = useAppSelector(a=> a.basket);
   const [getloadingState, setLoadingState] = useState({
     isloading:false,
     name:""
@@ -18,7 +20,7 @@ export default function BasketPage(){
   const handleCartDeletion =(productId:number, quantity:number, name:string)=>{
     setLoadingState({isloading:true , name})
     agent.Basket.removeItem(productId,quantity)
-    .then(()=> removeBasket(productId,quantity))
+    .then(()=> dispatch(removeItem({productId:productId, quantity:quantity})))
     .catch(a=> console.log(a))
     .finally(()=>setLoadingState({isloading:false , name}));
   }
@@ -26,7 +28,7 @@ export default function BasketPage(){
   const addingCart = (productId:number,quantity:number, name:string ) =>{
     setLoadingState({isloading:true , name})
     agent.Basket.addItem(productId,quantity)
-    .then((a:BasketData)=> setBasket(a))
+    .then((a:BasketData)=> dispatch(setBasket({...a})) )
     .catch(a=> console.log(a))
     .finally(()=> setLoadingState({isloading:false , name}))
   }
@@ -43,7 +45,7 @@ export default function BasketPage(){
                 </TableRow>
             </TableHead>
             <TableBody>
-                {basket?.items.map(item =>
+                {basket?.items.map((item:any) =>
                     (
                 
                     <TableRow key={item.productId}>
